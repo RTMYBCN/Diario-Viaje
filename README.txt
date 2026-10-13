@@ -1,4 +1,10 @@
-Diario interactivo Rosaura y Leo — v1.30
+Diario interactivo Rosaura y Leo — v1.31
+
+Cambios v1.31:
+- Retiradas de la escena de Doñana las fotos repetidas del coche.
+- Añadidos dos vídeos nuevos a Doñana: parque y coche con pulgar arriba.
+- Añadida la imagen del cartel de Doñana al capítulo y al álbum curado.
+- Ampliado el visor de escenas para mostrar vídeos de apoyo.
 
 Cambios v1.30:
 - Añadido a Mazagón el vídeo "inicio de la aventura" como escena principal.
