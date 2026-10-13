@@ -1,4 +1,9 @@
-Diario interactivo Rosaura y Leo — v1.23
+Diario interactivo Rosaura y Leo — v1.24
+
+Cambios v1.24:
+- Bajado aún más el título del hero para que no quede sobre Rosaura y Leo.
+- Ajustados los títulos de sección para que queden en una sola línea en escritorio.
+- Añadidas fotografías de apoyo dentro de las escenas, debajo del texto de cada capítulo.
 
 Cambios v1.23:
 - Bajado el bloque de texto del hero hacia la zona más oscura de la foto.
