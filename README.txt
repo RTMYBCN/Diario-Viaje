@@ -1,4 +1,9 @@
-Diario interactivo Rosaura y Leo — v1.24
+Diario interactivo Rosaura y Leo — v1.25
+
+Cambios v1.25:
+- Seleccionadas nuevas fotos de la tanda enviada por el usuario.
+- Añadidas imágenes de Puebla, Vilagarcía, Santiago, Gijón y Bilbao.
+- Ampliados los mosaicos de escenas y el álbum curado con la nueva selección.
 
 Cambios v1.24:
 - Bajado aún más el título del hero para que no quede sobre Rosaura y Leo.
