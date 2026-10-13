@@ -1,4 +1,9 @@
-Diario interactivo Rosaura y Leo — v1.25
+Diario interactivo Rosaura y Leo — v1.26
+
+Cambios v1.26:
+- Añadidas tres nuevas fotos del Parador de Mazagón.
+- Usada la bajada a la playa como imagen principal del capítulo de Mazagón.
+- Incorporada una nueva imagen de Mazagón al álbum curado.
 
 Cambios v1.25:
 - Seleccionadas nuevas fotos de la tanda enviada por el usuario.
