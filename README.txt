@@ -1,4 +1,9 @@
-Diario interactivo Rosaura y Leo — v1.29
+Diario interactivo Rosaura y Leo — v1.30
+
+Cambios v1.30:
+- Añadido a Mazagón el vídeo "inicio de la aventura" como escena principal.
+- Convertido el archivo original MOV a MP4 con audio para reproducción en navegador.
+- Creada una miniatura nueva para el vídeo de Mazagón.
 
 Cambios v1.29:
 - Retirada de la escena de Mazagón la foto de Rosaura y Leo brindando en el coche, porque no corresponde a esa etapa.
