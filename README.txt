@@ -1,4 +1,7 @@
-Diario interactivo Rosaura y Leo — v1.28
+Diario interactivo Rosaura y Leo — v1.29
+
+Cambios v1.29:
+- Retirada de la escena de Mazagón la foto de Rosaura y Leo brindando en el coche, porque no corresponde a esa etapa.
 
 Cambios v1.28:
 - Eliminada del mosaico de Mazagón la foto duplicada de Rosaura y Leo sentados en la entrada del Parador.
