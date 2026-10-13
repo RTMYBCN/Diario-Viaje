@@ -1,4 +1,7 @@
-Diario interactivo Rosaura y Leo — v1.27
+Diario interactivo Rosaura y Leo — v1.28
+
+Cambios v1.28:
+- Eliminada del mosaico de Mazagón la foto duplicada de Rosaura y Leo sentados en la entrada del Parador.
 
 Cambios v1.27:
 - Añadidas al álbum curado las tres fotos nuevas de Mazagón para que se vean directamente en la página principal.
