@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>El camino empieza agora — Rosaura y Leo</title>
+  <meta name="description" content="Diario interactivo de viaje de Rosaura y Leo. Mayo de 2026." />
+  <style>
+    :root{
+      --paper:#f6f0e5;
+      --paper2:#ebe0cf;
+      --ink:#241f1a;
+      --muted:#6b6258;
+      --line:#d8c9b3;
+      --dark:#181512;
+      --accent:#8a3a2d;
+      --accent2:#2f6f65;
+      --blue:#264e67;
+      --card:#fffaf0;
+      --shadow:0 22px 60px rgba(24,21,18,.18);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--ink);
+      background:linear-gradient(180deg,var(--paper),#fffaf2 40%,var(--paper));
+    }
+    img,video{max-width:100%;display:block}
+    a{color:inherit}
+    .serif{font-family: Georgia, "Times New Roman", serif;}
+    .topbar{
+      position:sticky;top:0;z-index:20;
+      backdrop-filter: blur(14px);
+      background:rgba(246,240,229,.82);
+      border-bottom:1px solid rgba(216,201,179,.7);
+    }
+    .nav{
+      max-width:1180px;margin:0 auto;padding:12px 18px;
+      display:flex;gap:14px;align-items:center;justify-content:space-between;
+    }
+    .brand{font-weight:800;letter-spacing:.02em;font-size:14px;text-transform:uppercase;color:var(--accent)}
+    .navlinks{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-end}
+    .navlinks a,.pill-btn{
+      text-decoration:none;border:1px solid rgba(138,58,45,.18);border-radius:999px;
+      padding:8px 12px;font-size:13px;background:rgba(255,250,240,.72);
+      color:#3c332b;transition:.18s ease;
+    }
+    .navlinks a:hover,.pill-btn:hover{background:#fff;border-color:rgba(138,58,45,.5);transform:translateY(-1px)}
+    .hero{
+      position:relative;min-height:86vh;display:grid;align-items:end;overflow:hidden;background:#0e0d0b;
+      color:#fff;
+    }
+    .hero video,.hero .hero-img{
+      position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;opacity:.86;
+    }
+    .hero:after{
+      content:"";position:absolute;inset:0;
+      background:linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,.28) 44%,rgba(0,0,0,.76));
+    }
+    .hero-content{position:relative;z-index:2;max-width:1360px;width:100%;margin:0 auto;padding:104px 24px 28px;}
+    .eyebrow{font-size:13px;text-transform:uppercase;letter-spacing:.22em;color:#f3d9bd;font-weight:700;margin-bottom:16px}
+    h1{font-size:clamp(44px,8vw,104px);line-height:.9;margin:0 0 18px;letter-spacing:-.06em;font-weight:500;text-wrap:balance;}
+    .subtitle{max-width:860px;font-size:clamp(18px,2.2vw,26px);line-height:1.35;color:rgba(255,255,255,.9);margin:0 0 26px}
+    .hero-meta{display:flex;flex-wrap:wrap;gap:10px}
+    .meta-chip{border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:9px 13px;background:rgba(255,255,255,.12);font-size:14px}
+    main{overflow:hidden}
+    section{padding:80px 22px}
+    .wrap{max-width:1180px;margin:0 auto}
+    .section-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,430px);gap:28px;align-items:end;margin-bottom:32px}
+    .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.22em;color:var(--accent);font-weight:800;margin-bottom:10px}
+    h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(34px,5vw,68px);line-height:.96;letter-spacing:-.045em;margin:0;color:#1d1914;font-weight:500}
+    .lead{font-size:18px;line-height:1.6;color:#4a4037;margin:0}
+    .panel{background:rgba(255,250,240,.78);border:1px solid rgba(216,201,179,.9);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+    .map-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(320px,.72fr);gap:22px;align-items:stretch}
+    .map-box{padding:14px;background:#fff7eb;border-radius:var(--radius);min-height:560px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(216,201,179,.75)}
+    .map-box img{width:100%;height:auto;max-height:760px;object-fit:contain;border-radius:18px}
+    .route-list{padding:18px;display:flex;flex-direction:column;gap:8px;max-height:760px;overflow:auto}
+    .route-item{border:1px solid rgba(216,201,179,.8);border-radius:16px;background:rgba(255,255,255,.58);padding:12px 14px;cursor:pointer;text-align:left;font:inherit;color:inherit;transition:.2s ease}
+    .route-item:hover{background:white;border-color:rgba(138,58,45,.42);transform:translateX(2px)}
+    .route-item small{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);font-weight:800;margin-bottom:3px}.route-item b{display:block;font-size:14px;line-height:1.2;color:#2f2822}.route-item span{display:block;font-size:12.5px;color:var(--muted);line-height:1.35;margin-top:4px}
+    .chapter-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+    .chapter-card{position:relative;min-height:470px;border-radius:var(--radius);overflow:hidden;color:#fff;background:#201b17;box-shadow:var(--shadow);display:flex;align-items:end;border:1px solid rgba(255,255,255,.14)}
+    .chapter-card img,.chapter-card video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;opacity:.86;transition:transform .6s ease, opacity .35s ease}
+    .chapter-card:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.18) 42%,rgba(0,0,0,.8));}
+    .chapter-card:hover img,.chapter-card:hover video{transform:scale(1.035);opacity:.94}
+    .chapter-content{position:relative;z-index:2;padding:22px;width:100%}
+    .chapter-num{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#f0d5b7;font-weight:800;margin-bottom:8px}
+    .chapter-title{font-family:Georgia,"Times New Roman",serif;font-size:34px;line-height:1;margin:0 0 10px;letter-spacing:-.04em}
+    .chapter-text{font-size:15px;line-height:1.45;color:rgba(255,255,255,.88);margin:0 0 16px}
+    .chapter-actions{display:flex;gap:9px;flex-wrap:wrap}
+    button{font:inherit}
+    .solid-btn{border:0;border-radius:999px;padding:10px 14px;cursor:pointer;font-weight:700;font-size:13px;transition:.18s ease;background:#fff;color:#231f1b}
+    .solid-btn:hover{transform:translateY(-1px)}
+    .moments{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+    .moment{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;min-height:132px;display:flex;flex-direction:column;justify-content:space-between;transition:.18s ease}
+    .moment:hover{transform:translateY(-2px);box-shadow:0 16px 38px rgba(36,31,26,.12)}
+    .moment strong{font-family:Georgia,"Times New Roman",serif;font-size:22px;line-height:1.05;font-weight:500}.moment span{font-size:13px;color:var(--muted);line-height:1.35;margin-top:12px}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
+    .media-tile{border-radius:var(--radius);overflow:hidden;min-height:420px;background:#1d1914;position:relative;box-shadow:var(--shadow)}
+    .media-tile img,.media-tile video{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}.media-tile:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.55))}.caption{position:absolute;left:18px;bottom:16px;z-index:2;color:white;font-size:14px;background:rgba(0,0,0,.32);padding:7px 10px;border-radius:999px}
+    .story-copy{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow)}
+    .story-copy h2 + p{margin-top:24px}
+    .story-copy p{font-size:18px;line-height:1.72;color:#3e352e;margin:0 0 18px}.story-copy p:last-child{margin-bottom:0}
+    .lists{display:grid;grid-template-columns:1fr 1fr;gap:18px}.lists.single{grid-template-columns:minmax(0,680px);justify-content:center}.list-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px}.list-card h3{margin:0 0 14px;font-family:Georgia,"Times New Roman",serif;font-size:30px;font-weight:500}.list-card ul{margin:0;padding:0;list-style:none;columns:1}.list-card li{padding:9px 0;border-bottom:1px solid rgba(216,201,179,.7);font-size:15px;color:#3d342d}.list-card li:last-child{border-bottom:0}
+    .stay-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .stay-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 14px 34px rgba(36,31,26,.1)}
+    .stay-card small{display:block;color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+    .stay-card h3{font-family:Georgia,"Times New Roman",serif;font-size:28px;line-height:1;margin:0 0 10px;font-weight:500;letter-spacing:-.03em}
+    .stay-card p{font-size:15px;line-height:1.58;color:#443a32;margin:0}
+    .album-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+    .album-card{position:relative;min-height:300px;border-radius:18px;overflow:hidden;background:#171410;color:white;box-shadow:0 16px 42px rgba(36,31,26,.16);border:1px solid rgba(255,255,255,.16)}
+    .album-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s ease, opacity .3s ease;opacity:.9}
+    .album-card:hover img{transform:scale(1.035);opacity:1}
+    .album-card:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.24) 48%,rgba(0,0,0,.78))}
+    .album-copy{position:absolute;z-index:2;left:0;right:0;bottom:0;padding:16px}
+    .album-copy small{display:block;text-transform:uppercase;letter-spacing:.14em;color:#f2d7b9;font-size:10px;font-weight:800;margin-bottom:6px}
+    .album-copy strong{display:block;font-family:Georgia,"Times New Roman",serif;font-size:22px;line-height:1.05;font-weight:500;margin-bottom:6px}
+    .album-copy span{display:block;font-size:13px;line-height:1.35;color:rgba(255,255,255,.86)}
+    .diary{display:grid;grid-template-columns:260px minmax(0,1fr);gap:22px}.diary-nav{position:sticky;top:86px;align-self:start;display:flex;flex-direction:column;gap:8px}.diary-nav button{border:1px solid var(--line);background:rgba(255,250,240,.8);border-radius:12px;text-align:left;padding:11px 12px;cursor:pointer;color:#40382f}.diary-nav button.active{background:#241f1a;color:#fff;border-color:#241f1a}.diary-text{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:30px;min-height:460px}.diary-text h3{font-family:Georgia,"Times New Roman",serif;font-size:42px;margin:0 0 8px;font-weight:500;letter-spacing:-.04em}.diary-text .data{color:var(--accent);font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;margin-bottom:18px}.diary-text p{font-size:17px;line-height:1.72;color:#3e352e;margin:0 0 16px}.note{border-left:4px solid var(--accent);padding:13px 16px;background:#f3e6d6;border-radius:0 14px 14px 0;color:#4b362e;margin:18px 0;font-weight:700}
+    .finale{background:#171410;color:#fff}.finale h2{color:#fff}.finale .lead{color:rgba(255,255,255,.78)}.finale .story-copy{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);color:#fff}.finale .story-copy p{color:rgba(255,255,255,.86)}
+    dialog{width:min(920px,calc(100% - 32px));max-height:calc(100dvh - 32px);border:0;border-radius:28px;padding:0;background:var(--card);box-shadow:0 40px 120px rgba(0,0,0,.5);overflow:auto;color:var(--ink)}
+    dialog::backdrop{background:rgba(20,17,14,.68);backdrop-filter:blur(8px)}
+    .modal-media{height:min(52vh,500px);background:#120f0d;position:relative}.modal-media img,.modal-media video{width:100%;height:100%;object-fit:contain}.modal-body{padding:28px}.modal-body h3{font-family:Georgia,"Times New Roman",serif;font-size:44px;line-height:1;margin:0 0 12px;font-weight:500;letter-spacing:-.04em}.modal-body p{line-height:1.68;color:#3c342d;font-size:17px;margin:0}.audio-status{display:none;margin:0 0 14px;padding:10px 13px;border-radius:14px;background:#efe1cf;color:#624236;font-weight:800;font-size:13px}.audio-status.show{display:block}.close{position:absolute;right:16px;top:16px;z-index:2;border:0;background:rgba(255,255,255,.9);border-radius:999px;padding:10px 14px;cursor:pointer;font-weight:800}
+    .fade{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}.fade.in{opacity:1;transform:none}
+    @media (max-width: 980px){.section-head,.map-grid,.split,.lists,.stay-grid,.diary{grid-template-columns:1fr}.chapter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.moments{grid-template-columns:repeat(2,minmax(0,1fr))}.album-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.diary-nav{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.hero{min-height:78vh}.nav{align-items:flex-start;flex-direction:column}}
+    @media (max-width: 620px){section{padding:56px 16px}.chapter-grid,.moments,.album-grid{grid-template-columns:1fr}.chapter-card{min-height:430px}.media-tile{min-height:340px}.album-card{min-height:380px}.story-copy,.diary-text,.list-card,.stay-card{padding:22px}.navlinks{gap:6px}.navlinks a{font-size:12px;padding:7px 10px}.diary-nav{grid-template-columns:1fr}.map-box{min-height:300px}.hero-content{padding:82px 18px 26px}.modal-media{height:min(42vh,340px)}.modal-body{padding:22px}.modal-body h3{font-size:36px}}
+    @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}.fade{opacity:1;transform:none;transition:none}.chapter-card:hover img,.chapter-card:hover video{transform:none}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav" aria-label="Navegación principal">
+      <div class="brand">Rosaura & Leo · Mayo 2026</div>
+      <div class="navlinks">
+        <a href="#inicio">Inicio</a>
+        <a href="#mapa">Mapa</a>
+        <a href="#capitulos">Capítulos</a>
+        <a href="#momentos">Momentos</a>
+        <a href="#album">Álbum</a>
+        <a href="#hospedajes">Hospedajes</a>
+        <a href="#mesas">Mesas</a>
+        <a href="#diario">Diario</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="inicio" class="hero">
+      <img class="hero-img" src="assets/img/hero_copas_coche.jpg" alt="Rosaura y Leo brindando junto al coche descapotable durante el viaje" />
+      <div class="hero-content">
+        <div class="eyebrow">Diario interactivo de viaje</div>
+        <h1 class="serif">El camino empieza agora</h1>
+          <p class="subtitle">Rosaura y Leo. Del sur al norte en coche, desde Mazagón hasta Hondarribia, con regreso a Barcelona. Mayo de 2026.</p>
+        <div class="hero-meta">
+          <span class="meta-chip">2.500 km aprox.</span>
+          <span class="meta-chip">11 días</span>
+          <span class="meta-chip">Carretera, hoteles, mesas y desvíos</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="mapa">
+      <div class="wrap">
+        <div class="section-head fade">
+          <div>
+            <div class="kicker">La ruta</div>
+            <h2>Un mapa,<br>muchas decisiones.</h2>
+          </div>
+        </div>
+        <div class="map-grid fade">
+          <div class="map-box panel">
+            <img src="assets/maps/route_map_clean.png" alt="Mapa de la ruta del viaje por España" />
+          </div>
+          <div class="route-list panel" aria-label="Etapas completas de la ruta">
+            <button class="route-item" data-target="cap-mazagon"><small>Día 1 · 12/5</small><b>Sevilla → Mazagón</b><span>Parador, playa, terraza y el primer pequeño desorden.</span></button>
+            <button class="route-item" data-target="cap-carretera"><small>Día 2 · 13/5</small><b>Mazagón → Doñana → Zafra → Mérida → Cáceres</b><span>Champagne, quesos, jamón, cantaor y Cáceres de noche.</span></button>
+            <button class="route-item" data-target="cap-salamanca"><small>Día 3 · 14/5</small><b>Cáceres → Plasencia → Salamanca → Puebla de Sanabria</b><span>Piedra, tapas, carretera, moteros y pulpo.</span></button>
+            <button class="route-item" data-target="cap-galicia"><small>Día 4 · 15/5</small><b>Puebla de Sanabria → Vilagarcía de Arousa</b><span>Entrada en Galicia, Terramar y cena en Diurno.</span></button>
+            <button class="route-item" data-target="cap-galicia"><small>Día 5 · 16/5</small><b>Vilagarcía / Terramar → Santiago de Compostela</b><span>Catedral, casco antiguo y la recomendación de los cubanos de Miami.</span></button>
+            <button class="route-item" data-target="cap-galicia"><small>Día 6 · 17/5</small><b>Santiago de Compostela → A Coruña</b><span>María Pita, Torre de Hércules y El de Alberto.</span></button>
+            <button class="route-item" data-target="cap-galicia"><small>Día 7 · 18/5</small><b>A Coruña → Playa de las Catedrales → Gijón</b><span>Desvío, champagne junto al mar y primer norte cantábrico.</span></button>
+            <button class="route-item" data-target="cap-soplao"><small>Día 8 · 19/5</small><b>Gijón → Altamira → El Soplao → Santander</b><span>Altamira era el plan; El Soplao se quedó con la escena.</span></button>
+            <button class="route-item" data-target="cap-bilbao"><small>Día 9 · 20/5</small><b>Santander → Bilbao</b><span>Sardinero, Guggenheim, Eneko y conexiones inesperadas.</span></button>
+            <button class="route-item" data-target="cap-hondarribia"><small>Día 10 · 21/5</small><b>Bilbao → Getaria → Hondarribia</b><span>Balenciaga, frontera, puerto y Hermandad de Pescadores.</span></button>
+            <button class="route-item" data-target="cap-regreso"><small>Día 11 · 22/5</small><b>Hondarribia → Barcelona</b><span>Regreso largo, cafés de ruta y cierre del viaje.</span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="prologo">
+      <div class="wrap split">
+        <div class="media-tile fade">
+          <video src="assets/videos/champagne_road.mp4" poster="assets/posters/champagne_road.jpg" autoplay muted loop playsinline></video>
+          <div class="caption">Carretera, copa y paisaje</div>
+        </div>
+        <div class="story-copy fade">
+          <div class="kicker">Prólogo</div>
+          <h2>Antes de llegar a ningún sitio.</h2>
+          <p>El viaje empezó casi sin darnos cuenta: el coche abierto, el aire entrando, las gorras, los pañuelos y esa mezcla de ilusión y desorden que anuncia que algo bueno está empezando.</p>
+          <p>Todavía no habíamos llegado a ningún sitio importante y ya estaba claro que la ruta no iba a obedecer del todo. Habría hoteles y reservas, sí, pero también paradas improvisadas, recomendaciones al vuelo, fotos absurdas, brindis y alguna decisión tomada simplemente porque apetecía.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="capitulos">
+      <div class="wrap">
+        <div class="section-head fade">
+          <div>
+            <div class="kicker">Capítulos</div>
+            <h2>El viaje contado por escenas.</h2>
+          </div>
+        </div>
+        <div id="chapterGrid" class="chapter-grid"></div>
+      </div>
+    </section>
+
+    <section id="momentos">
+      <div class="wrap">
+        <div class="section-head fade">
+          <div>
+            <div class="kicker">Momentos</div>
+            <h2>Cosas que no estaban en el plan.</h2>
+          </div>
+        </div>
+        <div class="moments fade">
+          <div class="moment"><strong>Las hojas volando</strong><span>Mazagón empezó con terraza, diario y rescate poco épico.</span></div>
+          <div class="moment"><strong>La primera copa</strong><span>Doñana convirtió la ruta en algo real.</span></div>
+          <div class="moment"><strong>El cantaor</strong><span>No vimos ruinas romanas. El jamón estaba buenísimo.</span></div>
+          <div class="moment"><strong>Los chochos</strong><span>Salamanca dejó patrimonio, tapas y documentación gráfica.</span></div>
+          <div class="moment"><strong>Los moteros</strong><span>Una recomendación de dos minutos acabó en pulpo buenísimo.</span></div>
+          <div class="moment"><strong>Los cubanos</strong><span>Una conversación en Santiago cambió la ruta hacia la Playa de las Catedrales.</span></div>
+          <div class="moment"><strong>Google decide</strong><span>El Soplao apareció mirando el móvil y se quedó con la escena.</span></div>
+          <div class="moment"><strong>Cancelar Gandarias</strong><span>Quedarse en Hondarribia fue exactamente lo que había que hacer.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="galeria">
+      <div class="wrap split">
+        <div class="story-copy fade">
+          <div class="kicker">Detalles visuales</div>
+          <h2>Pequeñas pruebas de que el viaje existió.</h2>
+          <p>Hay fotos que no necesitan explicarse demasiado: una camiseta con una frase que termina dando título a todo, una bandera, un escaparate con Superman, unos chochos salmantinos, una estatua, un Parador, unas botas llenas de flores.</p>
+          <p>No son decoración. Son las pequeñas pruebas de que nuestro viaje no fue solo una ruta: fue una sucesión de escenas propias, reconocibles, imposibles de confundir con las de nadie más.</p>
+        </div>
+        <div class="media-tile fade">
+          <img src="assets/img/camino_agora.jpg" alt="Camiseta con la frase O camiño empeza agora" />
+          <div class="caption">La frase que lo resume</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="album">
+      <div class="wrap">
+        <div class="section-head fade">
+          <div>
+            <div class="kicker">Álbum curado</div>
+            <h2>Las fotos que sostienen el relato.</h2>
+          </div>
+        </div>
+        <div id="albumGrid" class="album-grid fade"></div>
+      </div>
+    </section>
+
+    <section id="hospedajes">
+      <div class="wrap">
+        <div class="section-head fade">
+          <div>
+            <div class="kicker">Hospedajes</div>
+            <h2>Las casas temporales del camino.</h2>
+          </div>
+          <p class="lead">Los hoteles no fueron solo el final práctico de cada etapa. Algunos pusieron playa y pinar, otros piedra antigua, otros vistas al mar o una plaza histórica al otro lado de la puerta. Cada noche ayudó a cambiar el tono del viaje.</p>
+        </div>
+        <div class="stay-grid fade">
+          <article class="stay-card">
+            <small>Día 1 · Mazagón</small>
+            <h3>Parador de Mazagón</h3>
+            <p>El viaje empezó junto a Doñana, con pinos, playa y aire atlántico. La terraza funcionó mejor que la cena: gambas blancas, ensaladilla de pulpo, pavías de bacalao y esa primera sensación de que las vacaciones ya habían empezado.</p>
+          </article>
+          <article class="stay-card">
+            <small>Día 2 · Cáceres</small>
+            <h3>Parador de Cáceres</h3>
+            <p>Después de Doñana, Zafra, Mérida y la llegada a Cáceres, el Parador puso silencio y piedra antigua al final del día. Era el tipo de hotel que ayuda a bajar la voz después de una jornada bastante llena.</p>
+          </article>
+          <article class="stay-card">
+            <small>Día 3 · Puebla de Sanabria</small>
+            <h3>Parador de Puebla de Sanabria</h3>
+            <p>Puebla de Sanabria llegó después de Salamanca y de mucha carretera. El Parador fue descanso puro antes de Galicia; luego apareció la recomendación de los moteros, el Mesón Abelardo y un pulpo que terminó robándose la noche.</p>
+          </article>
+          <article class="stay-card">
+            <small>Día 4 · Rías Baixas</small>
+            <h3>Terramar, cerca de Vilagarcía</h3>
+            <p>La escala gallega tuvo un ritmo más tranquilo: Terramar, Vilagarcía, Franco Quintáns y amigos. Esa noche el recuerdo no está tanto en el hotel como en la cena de Diurno y en la sensación de haber entrado ya en otra parte del viaje.</p>
+          </article>
+          <article class="stay-card">
+            <small>Día 5 · Santiago</small>
+            <h3>Parador de Santiago de Compostela</h3>
+            <p>En Santiago, dormir junto al Obradoiro tenía algo inevitablemente especial. La cena de menú degustación fue más regular que memorable, pero la noche en el Parador dejó la sensación de estar dentro del propio escenario del Camino.</p>
+          </article>
+          <article class="stay-card">
+            <small>Día 6 · A Coruña</small>
+            <h3>NH Collection A Coruña Finisterre</h3>
+            <p>En A Coruña el hotel miraba hacia el agua y acompañó muy bien la etapa: paseo, Torre de Hércules y una comida en El de Alberto que quedó como una de las mejores del viaje, casi un capítulo aparte.</p>
+          </article>
+          <article class="stay-card">
+            <small>Día 7 · Gijón</small>
+            <h3>Parador de Gijón</h3>
+            <p>Gijón llegó después de la Playa de las Catedrales y de mucho Cantábrico. El Parador dio una entrada tranquila a la ciudad, y por la noche Zascandil dejó una cena correcta, con alguna cosa mejor que otra.</p>
+          </article>
+          <article class="stay-card">
+            <small>Día 8 · Santander</small>
+            <h3>Gran Hotel Sardinero</h3>
+            <p>Después de Altamira y El Soplao, llegar al Sardinero fue casi cambiar de película: costa, paseo y un hotel que gustó mucho. La cena en La Mulata queda pendiente de completar, pero la noche santanderina sí encontró su tono.</p>
+          </article>
+          <article class="stay-card">
+            <small>Día 9 · Bilbao</small>
+            <h3>Hotel Carlton</h3>
+            <p>El Carlton puso a Bilbao en modo ciudad grande. Ese día tuvo Guggenheim, paseo, cena en Eneko y conexiones argentinas inesperadas. Fue una de esas etapas en las que todo parecía tener un poco más de brillo.</p>
+          </article>
+          <article class="stay-card">
+            <small>Día 10 · Hondarribia</small>
+            <h3>Parador de Hondarribia</h3>
+            <p>Hondarribia fue el lugar adecuado para no moverse más. Cancelar Gandarias y quedarse allí terminó siendo la mejor decisión: paseo al atardecer, puerto, piedra, Parador y cena final en la Hermandad de Pescadores.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="mesas">
+      <div class="wrap">
+        <div class="section-head fade">
+          <div>
+            <div class="kicker">Mesas</div>
+            <h2>Donde el viaje se sentó a comer.</h2>
+          </div>
+        </div>
+        <div class="stay-grid fade">
+          <article class="stay-card">
+            <small>Mazagón · Tapas</small>
+            <h3>Terraza del Parador</h3>
+            <p>La primera tarde tuvo sabor de llegada: gambas blancas, ensaladilla de pulpo, pavías de bacalao, vino, agua y café. La terraza funcionó muy bien, con esa mezcla de cansancio e ilusión de quien por fin se sienta después de empezar.</p>
+          </article>
+          <article class="stay-card">
+            <small>Mazagón · Cena</small>
+            <h3>Parador de Mazagón</h3>
+            <p>La cena en el Parador no convenció demasiado. No quedaron platos concretos documentados, y quizá por eso el recuerdo gastronómico de Mazagón se quedó más en la terraza de la tarde que en la mesa de la noche.</p>
+          </article>
+          <article class="stay-card">
+            <small>Zafra · Aperitivo</small>
+            <h3>La Bendita</h3>
+            <p>En Zafra, La Bendita fue una parada breve y feliz. La tabla de quesos regionales gustó mucho y dejó la sensación de que la ruta empezaba a tener sus propios hallazgos: pequeños, sabrosos y sin demasiada planificación.</p>
+          </article>
+          <article class="stay-card">
+            <small>Mérida · Aperitivo</small>
+            <h3>Con Vicente</h3>
+            <p>La escala cultural se convirtió en aperitivo informal: verdejo, jamón ibérico y un cantaor que terminó haciéndole una serenata a Rosaura. No hubo visita monumental, pero la escena quedó bastante más viva que cualquier plan previsto.</p>
+          </article>
+          <article class="stay-card">
+            <small>Cáceres · Cena</small>
+            <h3>Torre de Sande</h3>
+            <p>En Cáceres, Torre de Sande fue una cena correcta en un espacio que gustó mucho. Más que los platos, quedó el ambiente: la luz baja, el casco antiguo y el encuentro con Toño Pérez como pequeño regalo inesperado de la noche.</p>
+          </article>
+          <article class="stay-card">
+            <small>Plasencia · Parada técnica</small>
+            <h3>Plaza Mayor</h3>
+            <p>Plasencia fue una parada corta, de esas que no pretenden convertirse en capítulo. Una cerveza en la Plaza Mayor bastó para estirar las piernas, mirar alrededor y seguir camino hacia Salamanca sin cargar demasiado la escena.</p>
+          </article>
+          <article class="stay-card">
+            <small>Salamanca · Tapas</small>
+            <h3>Las Tapas de Gonzalo</h3>
+            <p>Salamanca tuvo piedra dorada, paseo y mesa. En Las Tapas de Gonzalo quedaron especialmente en la memoria las patatas bravas y el brioche de steak tartar. Después aparecerían los chochos, documentados con foto aunque sin cata.</p>
+          </article>
+          <article class="stay-card">
+            <small>Puebla de Sanabria · Cena</small>
+            <h3>Mesón Abelardo</h3>
+            <p>La recomendación de los moteros funcionó. En Mesón Abelardo hubo ensalada de ventresca con pimientos y bonito, pulpo, pan, vino, agua, mousse de chocolate y cafés. Lo que quedó por encima de todo fue el pulpo.</p>
+          </article>
+          <article class="stay-card">
+            <small>Vilagarcía de Arousa · Cena</small>
+            <h3>Diurno</h3>
+            <p>En Vilagarcía de Arousa, Diurno aportó una parada más urbana y relajada, cerca de la zona de vinos y tapeo del centro. La cena con Franco Quintáns y amigos tuvo pataquiñas Diurno, ensalada de pollo, nachos Killbill, focaccia de roastbeef, tiramisú y tarta de queso al horno.</p>
+          </article>
+          <article class="stay-card">
+            <small>Terramar · Comida</small>
+            <h3>Terramar</h3>
+            <p>Al día siguiente, Rosaura comió en Terramar. Leo no comió por asuntos propios, así que la escena queda apuntada de forma desigual: una comida real para una parte del viaje y un hueco en blanco para la otra.</p>
+          </article>
+          <article class="stay-card">
+            <small>Santiago · Cena</small>
+            <h3>Parador de Santiago</h3>
+            <p>La cena en el Parador de Santiago fue menú degustación, pero la valoración quedó regular. El lugar tenía todo el peso simbólico del Obradoiro; la mesa, en cambio, no terminó de acompañar con la misma fuerza.</p>
+          </article>
+          <article class="stay-card">
+            <small>A Coruña · Comida</small>
+            <h3>El de Alberto</h3>
+            <p>El de Alberto fue una de las grandes mesas del viaje: 10/10. Hubo menú degustación, con atún rojo marinado, salmón con tártara de anguila, dumplings a la carbonara, merluza a la gallega, ciervo, espárragos y un donete de chocolate blanco con crema de galleta.</p>
+          </article>
+          <article class="stay-card">
+            <small>A Coruña · Noche</small>
+            <h3>Café La Dársena</h3>
+            <p>La noche coruñesa siguió en Café La Dársena, sin grandes ceremonias: agua, copas de Godello, patatas Bonilla, cafés y crema de whisky. Una de esas paradas que no necesitan mucho para quedar bien colocadas en el recuerdo.</p>
+          </article>
+          <article class="stay-card">
+            <small>Gijón · Cena</small>
+            <h3>Zascandil</h3>
+            <p>En Zascandil hubo alcachofas con langostinos al oloroso, puerros con vinagreta de manzana y avellanas, calamares en su tinta con arroz, sidra Alicia, postres y café. La cena fue correcta; los calamares no gustaron.</p>
+          </article>
+          <article class="stay-card">
+            <small>Santander · Cena</small>
+            <h3>La Mulata</h3>
+            <p>La Mulata queda todavía como una cena pendiente de completar. Sabemos que fue la noche de Santander, después del Gran Hotel Sardinero y antes del paseo de regreso, pero falta ticket o recuerdo confirmado para fijar los platos.</p>
+          </article>
+          <article class="stay-card">
+            <small>Bilbao · Cena</small>
+            <h3>Eneko Basque Bilbao</h3>
+            <p>En Bilbao, el Menú Degustación Bizkaia estuvo muy bien: mini talo de maíz, vieira marinada, praliné de setas, yema sobre estofado de trigo, merluza en tempura con salsa verde, vacuno a la brasa y goxua con helado de caramelo.</p>
+          </article>
+          <article class="stay-card">
+            <small>Hondarribia · Cena</small>
+            <h3>Hermandad de Pescadores</h3>
+            <p>La cena final llegó después de cancelar Gandarias y quedarse en Hondarribia. En la Hermandad de Pescadores hubo txangurro a la donostiarra, sopa de pescado, huevos estrellados Hermandad y lomo de rape a la parrilla. Un cierre muy bien elegido.</p>
+          </article>
+          <article class="stay-card">
+            <small>Ruta de regreso · Café</small>
+            <h3>Paradas en carretera</h3>
+            <p>El último día no tuvo comida formal documentada. Fue más bien carretera, cafés, descansos, estirar las piernas y seguir. Después de tantas mesas, también tenía sentido que el regreso fuera sencillo.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="diario">
+      <div class="wrap">
+        <div class="section-head fade">
+          <div>
+            <div class="kicker">Diario completo</div>
+            <h2>Para volver al viaje con calma.</h2>
+          </div>
+          <p class="lead">Aquí bajamos el ritmo: podemos recorrer otra vez las etapas, sin prisa, con sus pequeñas escenas, sus desvíos y esa memoria compartida que aparece cuando contamos una historia con cariño.</p>
+        </div>
+        <div class="diary fade">
+          <div id="diaryNav" class="diary-nav" aria-label="Elegir capítulo del diario"></div>
+          <article id="diaryText" class="diary-text" aria-live="polite"></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="cierre" class="finale">
+      <div class="wrap split">
+        <div class="media-tile fade">
+          <video src="assets/videos/regreso.mp4" poster="assets/posters/regreso.jpg" autoplay muted loop playsinline></video>
+          <div class="caption">Volver también formaba parte del viaje</div>
+        </div>
+        <div class="story-copy fade">
+          <div class="kicker">Cierre</div>
+          <h2>Lo que quedó.</h2>
+          <p>El viaje terminó en Barcelona, después de unos 2.500 kilómetros.</p>
+          <p>Quedaron hoteles, carreteras, comidas, cuevas, museos, conversaciones y unas cuantas decisiones tomadas bastante sobre la marcha.</p>
+          <p>Visto ahora, quizá esa fue la mejor parte: no haber intentado controlarlo todo.</p>
+          <p>No todo fue perfecto. Mejor así. Los viajes perfectos suelen ser bastante aburridos cuando los contamos después.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="chapterDialog" aria-label="Detalle del capítulo">
+    <button class="close" id="closeDialog">Cerrar</button>
+    <div id="modalMedia" class="modal-media"></div>
+    <div class="modal-body">
+      <h3 id="modalTitle"></h3>
+      <div id="audioStatus" class="audio-status"></div>
+      <p id="modalText"></p>
+      <div id="modalNote" class="note"></div>
+    </div>
+  </dialog>
+
+  <script>
+    const chapters = [
+      {id:'cap-mazagon', num:'Día 1', title:'Mazagón', meta:'12/5 · Sevilla / Mazagón · 100 km aprox.', media:'assets/img/curated/02_mazagon_parador.jpg', type:'image', short:'El Parador, la playa y el primer desorden feliz del viaje.', text:'Nuestro viaje juntos tenía que comenzar en Huelva, ese era el punto de encuentro pactado. Rosaura llegó en barco, con el coche a cuestas, y Leo iba a llegar en tren, previo paso por Sevilla. ¿Qué pasó? Pues que ya sabemos cómo es Rosaura: una llamada por teléfono y, a los diez minutos, Leo pregunta: "Estás conduciendo, ¿verdad?". A la media hora, ambos ya estábamos a bordo del descapotable en Sevilla. Pero aunque ahí comenzó todo, el primer cambio de ritmo llegó al ver el mar en Huelva. Mazagón fue una entrada tranquila: Parador, playa, terraza y ese primer paseo en el que Rosaura empezó a recoger conchas. También hubo una escena bastante eficaz como inicio: unas hojas del diario salieron volando desde la terraza y Leo tuvo que saltar el muro para recuperarlas. No fue heroico, pero sí útil para entender el tono de nuestro viaje.', note:'Primer día. Primeras conchas. Primer pequeño desorden.'},
+      {id:'cap-carretera', num:'Día 2', title:'Doñana', meta:'13/5 · Mazagón / Doñana / Zafra / Cáceres · 360 km aprox.', media:'assets/videos/champagne_road.mp4', poster:'assets/posters/champagne_road.jpg', type:'video', short:'La carretera dejó de ser tránsito y empezó a ser parte del viaje.', text:'Atravesar Doñana convirtió el viaje en algo real. Hasta entonces teníamos reservas, hoteles y una ruta pensada. Pero en esa carretera, con el paisaje alrededor, el coche abierto y la primera botella de champagne abierta, empezó otra cosa. Esa foto no habla de llegar rápido: habla de bajar el ritmo, mirar, brindar y aceptar que el camino iba a mandar bastante más de lo previsto.', note:'La primera copa tuvo más importancia que muchos monumentos.'},
+      {id:'cap-merida', num:'Día 2', title:'Zafra, Mérida y Cáceres', meta:'13/5 · Una escala cultural que se convirtió en sobremesa', media:'assets/img/curated/03_caceres_mesa.jpg', type:'image', short:'Vinimos a saludar a Vicente. Las ruinas quedaron para otro día.', text:'La idea era hacer una escala en Mérida y, de paso, saludar a Vicente, un amigo de Rosaura. ¿Qué hicimos finalmente? Pues entre una copa de verdejo, una tapa de jamón ibérico y un cantaor improvisado que acabó dándole una serenata a Rosaura, la visita cultural quedó cancelada hasta nuevo aviso. No vimos ruinas romanas, ni escenarios monumentales, ni siquiera la plaza de toros porque solo nos quedamos en la puerta. Pero eso sí, el jamón estaba buenísimo. Más tarde, Cáceres puso la mesa, la luz baja y esa calma de restaurante en la que empezamos a contar el día de otra manera.', note:'El cantaor no derritió el corazón de Rosaura.'},
+      {id:'cap-salamanca', num:'Día 3', title:'Salamanca', meta:'14/5 · Cáceres / Plasencia / Salamanca', media:'assets/img/curated/04_salamanca_torrente.jpg', type:'image', short:'Piedra, tapas, literatura sentada a la mesa y documentación salmantina.', text:'Salamanca tuvo Plaza Mayor, Universidad, Casa de las Conchas, catedral, puertas rojas y comida en Las Tapas de Gonzalo. Quedaron especialmente en la memoria las patatas bravas y el brioche de steak tartar. También aparecieron los chochos de Salamanca, aunque no los probamos, pero les hicimos foto. Y, como no todo iba a ser piedra dorada, Rosaura encontró una escena perfecta junto a Gonzalo Torrente Ballester: literatura, café y esa naturalidad suya para convertir cualquier rincón en recuerdo.', note:'Los chochos quedaron documentados. Fin del comunicado.'},
+      {id:'cap-puebla', num:'Día 3', title:'Puebla de Sanabria', meta:'14/5 · Salamanca / Puebla de Sanabria', media:'assets/img/curated/06_puebla_botas.jpg', type:'image', short:'Una recomendación motera, pulpo buenísimo y una ventana inolvidable.', text:'Al llegar al Parador nos cruzamos con una pareja que viajaba en moto. Hablamos un rato y nos recomendaron cenar en Mesón Abelardo. Hicimos caso. Fue buena idea. El pulpo fue lo más recordado de la cena. Puebla de Sanabria quedó también en detalles pequeños: piedra, calles, una iglesia, el aire de villa detenida y unas botas convertidas en macetero que resumen muy bien la gracia de mirar sin prisa.', note:'Recomendación motera. Resultado: pulpo buenísimo.'},
+      {id:'cap-galicia', num:'Días 4–7', title:'Galicia sin prisa', meta:'Vilagarcía / Santiago / A Coruña / Playa de las Catedrales / Gijón', media:'assets/img/curated/08_santiago_rosaura.jpg', type:'image', short:'Mesa, piedra, conversación y una frase que acabó dando título al viaje.', text:'Galicia no nos entró tanto por una sola gran escena como por acumulación: mesa, conversación, piedra, ciudad y mar. Vilagarcía fue encuentro con Franco Quintáns y amigos. Santiago fue casco antiguo, Catedral, Parador y una recomendación inesperada. A Coruña fue paseo, vista abierta al agua desde el hotel, Torre de Hércules y una comida en El de Alberto que quedó registrada como una de las mejores del viaje. Después, la Playa de las Catedrales apareció como consecuencia de una conversación con unos cubanos de Miami. Por el camino apareció también la frase que lo ordenó todo: "O camiño empeza agora".', note:'No todo necesita vídeo para quedar en la memoria.'},
+      {id:'cap-soplao', num:'Día 8', title:'El Soplao', meta:'19/5 · Gijón / Altamira / El Soplao / Santander', media:'assets/videos/soplao_train.mp4', poster:'assets/posters/soplao_train.jpg', type:'video', short:'Una búsqueda rápida decidió una de las mejores paradas del viaje.', text:'Íbamos hacia Altamira cuando apareció otra posibilidad relativamente cerca: El Soplao. Miramos unas fotos y el plan cambió bastante rápido. Altamira tuvo interés, pero El Soplao se quedó con la escena: tren, cueva, sorpresa y esa sensación de haber encontrado algo que no estaba escrito en la ruta inicial.', note:'Hay decisiones que tardan cinco minutos y luego parecen imprescindibles.'},
+      {id:'cap-santander', num:'Día 8–9', title:'Santander', meta:'Gran Hotel Sardinero / La Mulata / Túnel de Pombo', media:'assets/videos/santander_sardinero.mp4', poster:'assets/posters/santander_sardinero.jpg', type:'video', short:'Hotel bonito, costa y un túnel que terminó entrando en el diario.', text:'Después de Altamira y El Soplao llegamos a Santander y nos alojamos en el Gran Hotel Sardinero. El hotel nos gustó mucho. Por la noche cenamos en La Mulata. Después, camino del hotel, pasamos por el Túnel del Tren de Pombo, también conocido como antiguo túnel de Tetuán o túnel de La Cañía. Santander tuvo costa, hotel bonito, paseo y túnel. Bastante completo.', note:'No todo en un viaje tiene que ser postal.'},
+      {id:'cap-bilbao', num:'Día 9', title:'Bilbao', meta:'20/5 · Santander / Bilbao', media:'assets/videos/guggenheim.mp4', poster:'assets/posters/guggenheim.jpg', type:'video', short:'El Guggenheim funcionó antes incluso de entrar.', text:'El Guggenheim funcionó antes incluso de entrar. El edificio, la ría, la escala y esa manera en que Bilbao parece ordenarse alrededor del museo. Dentro, la visita tuvo presencia física: espacios grandes, materiales pesados, recorridos que no necesitan explicarse demasiado. Luego, por la noche, Eneko y las conexiones argentinas añadieron otra capa al día.', note:'El mundo es grande, pero a veces se comporta como si no.'},
+      {id:'cap-hondarribia', num:'Día 10', title:'Hondarribia', meta:'21/5 · Bilbao / Getaria / Hondarribia', media:'assets/videos/hondarribia.mp4', poster:'assets/posters/hondarribia.jpg', type:'video', short:'Cancelar Gandarias fue una buena decisión.', text:'Llegamos a Hondarribia y nos alojamos en el Parador. Teníamos reserva para cenar en Gandarias, en San Sebastián, pero decidimos cancelarla. A esas alturas del viaje tenía más sentido quedarse donde estábamos que volver a mover piezas. Paseamos por Hondarribia al atardecer y cenamos en la Hermandad de Pescadores. Fue una buena decisión: quedarse también puede ser una forma de viajar.', note:'Cancelar un plan también puede ser una forma de acertar.'},
+      {id:'cap-regreso', num:'Día 11', title:'Volver', meta:'22/5 · Hondarribia / Barcelona · 505 km aprox.', media:'assets/videos/regreso.mp4', poster:'assets/posters/regreso.jpg', type:'video', short:'Carretera, café y silencio de viaje largo.', text:'El regreso no tuvo que competir con los días anteriores. Fue carretera, café, paradas y silencio de viaje largo. Después de tantos días enlazando lugares, comidas, hoteles, cuevas, museos, conversaciones y fotos, el camino de vuelta sirvió para empezar a ordenar todo. El viaje ya no estaba pasando. Empezaba a convertirse en recuerdo.', note:'Sin fuegos artificiales. Tampoco hacían falta.'}
+    ];
+
+    const album = [
+      {src:'assets/img/curated/01_inicio_coche.jpg', etapa:'Inicio', title:'Arrancar juntos', text:'El descapotable, las gorras y la sonrisa de salida.'},
+      {src:'assets/img/curated/02_mazagon_parador.jpg', etapa:'Mazagón', title:'Primer Parador', text:'La foto de apertura íntima: aquí empieza el diario.'},
+      {src:'assets/img/curated/03_caceres_mesa.jpg', etapa:'Cáceres', title:'La mesa y la cámara', text:'Cena, luz baja y la memoria ya tomando forma.'},
+      {src:'assets/img/curated/04_salamanca_torrente.jpg', etapa:'Salamanca', title:'Rosaura y Torrente', text:'Humor, café y literatura sentada al lado.'},
+      {src:'assets/img/curated/05_salamanca_chochos.jpg', etapa:'Salamanca', title:'Documento gastronómico', text:'No se probaron, pero había que dejar constancia.'},
+      {src:'assets/img/curated/06_puebla_botas.jpg', etapa:'Puebla', title:'Botas con flores', text:'Un detalle pequeño que vale por una página entera.'},
+      {src:'assets/img/curated/08_santiago_rosaura.jpg', etapa:'Santiago', title:'Frente a la nave', text:'La escala humana dentro de una ciudad monumental.'},
+      {src:'assets/img/curated/09_santiago_parador.jpg', etapa:'Santiago', title:'El Hostal', text:'La fachada para situar una de las noches importantes.'},
+      {src:'assets/img/curated/10_coruna_vista.jpg', etapa:'A Coruña', title:'Vista al agua', text:'Hotel, puerto y horizonte antes de seguir ruta.'},
+      {src:'assets/img/camino_agora.jpg', etapa:'Galicia', title:'La frase', text:'O camiño empeza agora: título y espíritu del viaje.'},
+      {src:'assets/img/rosaura_superman.jpg', etapa:'Santiago', title:'Superman', text:'El viaje también necesitaba esta clase de escena.'},
+      {src:'assets/img/bandera_hondarribia.jpg', etapa:'Hondarribia', title:'La frontera', text:'Color, viento y cierre norte de la ruta.'}
+    ];
+
+    const chapterGrid = document.getElementById('chapterGrid');
+    chapters.forEach(ch => {
+      const article = document.createElement('article');
+      article.className = 'chapter-card fade';
+      article.id = ch.id;
+      const media = ch.type === 'video'
+        ? `<video src="${ch.media}" poster="${ch.poster || ''}" autoplay muted loop playsinline></video>`
+        : `<img src="${ch.media}" alt="${ch.title}">`;
+      article.innerHTML = `${media}<div class="chapter-content"><div class="chapter-num">${ch.num}</div><h3 class="chapter-title">${ch.title}</h3><p class="chapter-text">${ch.short}</p><div class="chapter-actions"><button class="solid-btn" type="button" data-open="${ch.id}">Abrir escena</button></div></div>`;
+      chapterGrid.appendChild(article);
+    });
+
+    const albumGrid = document.getElementById('albumGrid');
+    album.forEach(item => {
+      const card = document.createElement('article');
+      card.className = 'album-card';
+      card.innerHTML = `<img src="${item.src}" alt="${item.title}"><div class="album-copy"><small>${item.etapa}</small><strong>${item.title}</strong><span>${item.text}</span></div>`;
+      albumGrid.appendChild(card);
+    });
+
+    const diaryNav = document.getElementById('diaryNav');
+    const diaryText = document.getElementById('diaryText');
+    function renderDiary(id){
+      const ch = chapters.find(c => c.id === id) || chapters[0];
+      [...diaryNav.querySelectorAll('button')].forEach(b => b.classList.toggle('active', b.dataset.id === ch.id));
+      diaryText.innerHTML = `<h3>${ch.title}</h3><div class="data">${ch.meta}</div><p>${ch.text}</p><div class="note">${ch.note}</div>`;
+    }
+    chapters.forEach((ch, idx) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.dataset.id = ch.id;
+      b.textContent = `${ch.num} · ${ch.title}`;
+      b.addEventListener('click', () => renderDiary(ch.id));
+      diaryNav.appendChild(b);
+      if(idx===0) b.classList.add('active');
+    });
+    renderDiary(chapters[0].id);
+
+    const dialog = document.getElementById('chapterDialog');
+    const modalMedia = document.getElementById('modalMedia');
+    const modalTitle = document.getElementById('modalTitle');
+    const audioStatus = document.getElementById('audioStatus');
+    const modalText = document.getElementById('modalText');
+    const modalNote = document.getElementById('modalNote');
+    function openChapter(id){
+      const ch = chapters.find(c => c.id === id);
+      if(!ch) return;
+      modalMedia.innerHTML = ch.type === 'video'
+        ? `<video src="${ch.media}" poster="${ch.poster || ''}" preload="auto" playsinline controls></video>`
+        : `<img src="${ch.media}" alt="${ch.title}">`;
+      modalTitle.textContent = ch.title;
+      audioStatus.classList.toggle('show', ch.type === 'video' && ch.audio === false);
+      audioStatus.textContent = ch.type === 'video' && ch.audio === false
+        ? 'Este clip está exportado sin pista de audio. Al sustituirlo por el vídeo original, los controles reproducirán el sonido.'
+        : '';
+      modalText.textContent = ch.text;
+      modalNote.textContent = ch.note;
+      if(typeof dialog.showModal === 'function') dialog.showModal();
+      const video = modalMedia.querySelector('video');
+      if(video){
+        video.muted = false;
+        video.removeAttribute('muted');
+        video.volume = 1;
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      }
+    }
+    document.addEventListener('click', (e) => {
+      const open = e.target.closest('[data-open]');
+      if(open) openChapter(open.dataset.open);
+      const route = e.target.closest('[data-target]');
+      if(route){ document.getElementById(route.dataset.target)?.scrollIntoView({behavior:'smooth', block:'center'}); }
+    });
+    document.getElementById('closeDialog').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('close', () => { modalMedia.querySelectorAll('video').forEach(v => v.pause()); });
+
+    const fades = document.querySelectorAll('.fade');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('in'); io.unobserve(entry.target); } });
+    }, {threshold:.12});
+    fades.forEach(el => io.observe(el));
+
+    const vids = document.querySelectorAll('video[autoplay]');
+    const vio = new IntersectionObserver((entries)=>{
+      entries.forEach(entry => {
+        const v = entry.target;
+        if(entry.isIntersecting){ v.play().catch(()=>{}); }
+        else { v.pause(); }
+      });
+    }, {threshold:.18});
+    vids.forEach(v => vio.observe(v));
+  </script>
+</body>
+</html>
