@@ -1,4 +1,9 @@
-Diario interactivo Rosaura y Leo — v1.31
+Diario interactivo Rosaura y Leo — v1.32
+
+Cambios v1.32:
+- Procesada una primera selección de la carpeta `material_viaje_diario`.
+- Añadidos vídeos de apoyo a Mazagón, Cáceres, Puebla, Galicia, Hondarribia y regreso.
+- Convertidos y recortados clips largos para mantener una carga razonable.
 
 Cambios v1.31:
 - Retiradas de la escena de Doñana las fotos repetidas del coche.
